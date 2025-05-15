@@ -1,0 +1,167 @@
+import { db } from "@/db";
+import { videos, videoUpdateSchema } from "@/db/schema";
+import { mux } from "@/lib/mux";
+import { createTRPCRouter, protectedProcedure } from "@/trpc/init";
+import { TRPCError } from "@trpc/server";
+import { and, eq } from "drizzle-orm";
+import { UTApi } from "uploadthing/server";
+import { z } from "zod";
+
+export const videosRouter = createTRPCRouter({
+  // reset thumbnail to default/odl thumbnail
+  restoreThumbnail: protectedProcedure
+    .input(
+      z.object({
+        id: z.string().uuid(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { id: userId } = ctx.user;
+
+      // get the existing video
+      const [currentVideo] = await db
+        .select()
+        .from(videos)
+        .where(and(eq(videos.id, input.id), eq(videos.userId, userId)));
+
+      // throw errors if the current video does not exist or lack muxplayerId
+      if (!currentVideo)
+        throw new TRPCError({ code: "NOT_FOUND", message: "video not found" });
+
+      // clean up old files
+      if (currentVideo.thumbnailKey) {
+        const utapi = new UTApi();
+
+        await utapi.deleteFiles(currentVideo.thumbnailKey);
+        await db
+          .update(videos)
+          .set({ thumbnailKey: null, thumbnailUrl: null })
+          .where(
+            and(eq(videos.id, input.id), eq(videos.userId, userId))
+          );
+      }
+
+      if (!currentVideo.muxPlaybackId)
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "invalid request",
+        });
+
+      const utapi = new UTApi()
+
+      const tempThumbnailUrl = `https://image.mux.com/${currentVideo.muxPlaybackId}/thumbnail.jpg`;
+      const uploadedThumb = await utapi.uploadFilesFromUrl(tempThumbnailUrl)
+
+      if (!uploadedThumb.data) {
+        throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "no thumbnail url"})
+      }
+
+      const { key: thumbnailKey, url: thumbnailUrl } = uploadedThumb.data
+
+      // reset the thumbnail
+      const [newVideo] = await db
+        .update(videos)
+        .set({ thumbnailUrl, thumbnailKey })
+        .where(and(eq(videos.id, input.id), eq(videos.userId, userId)))
+        .returning();
+
+      return newVideo;
+    }),
+
+  //delete video
+  remove: protectedProcedure
+    .input(
+      z.object({
+        id: z.string().uuid(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { id: userId } = ctx.user;
+
+      const [deletedVideo] = await db
+        .delete(videos)
+        .where(and(eq(videos.id, input.id), eq(videos.userId, userId)))
+        .returning();
+
+      if (!deletedVideo)
+        throw new TRPCError({ code: "NOT_FOUND", message: "video not found" });
+
+      return deletedVideo;
+    }),
+
+  //update video
+  update: protectedProcedure
+    .input(videoUpdateSchema)
+    .mutation(async ({ ctx, input }) => {
+      const { id: userId } = ctx.user;
+
+      // check if video id is valid
+      if (!input.id) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Invalid video id",
+        });
+      }
+
+      const [updatedVideo] = await db
+        .update(videos)
+        .set({
+          title: input.title,
+          description: input.description,
+          categoryId: input.categoryId,
+          visibility: input.visibility,
+          updatedAt: new Date(),
+        })
+        .where(
+          and(eq(videos.id, input.id as string), eq(videos.userId, userId))
+        )
+        .returning();
+
+      // if video not found
+      if (!updatedVideo) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Video not found",
+        });
+      }
+
+      return updatedVideo;
+    }),
+
+  create: protectedProcedure.mutation(async ({ ctx }) => {
+    const { id: userId } = ctx.user;
+
+    const upload = await mux.video.uploads.create({
+      new_asset_settings: {
+        passthrough: userId,
+        playback_policies: ["public"],
+        inputs: [
+          {
+            generated_subtitles: [
+              {
+                language_code: "en",
+                name: "English",
+              },
+            ],
+          },
+        ],
+      },
+      cors_origin: "*",
+    });
+
+    const [video] = await db
+      .insert(videos)
+      .values({
+        userId,
+        title: "Untitled",
+        muxStatus: "waiting",
+        muxUploadId: upload.id,
+      })
+      .returning();
+
+    return {
+      video: video,
+      url: upload.url,
+    };
+  }),
+});
