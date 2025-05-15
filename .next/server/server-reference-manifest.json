@@ -1,0 +1,90 @@
+{
+  "node": {
+    "7f1a4258143de488f2930ecf0d4b6a4615e72d184f": {
+      "workers": {
+        "app/(home)/page": {
+          "moduleId": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22D%3A%5C%5Ctemp%5C%5CYouTube%5C%5Cnode_modules%5C%5C%40clerk%5C%5Cnextjs%5C%5Cdist%5C%5Cesm%5C%5Capp-router%5C%5Ckeyless-actions.js%22%2C%5B%5B%227f1a4258143de488f2930ecf0d4b6a4615e72d184f%22%2C%22syncKeylessConfigAction%22%5D%2C%5B%227f2321b7426fd96bb1157291c36d8a0a156fed87cc%22%2C%22createOrReadKeylessAction%22%5D%2C%5B%227f9fef97f0fb4fc760dced7691ad9290af669143b5%22%2C%22deleteKeylessAction%22%5D%5D%5D%5D&__client_imported__=!",
+          "async": false
+        },
+        "app/(studio)/studio/page": {
+          "moduleId": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22D%3A%5C%5Ctemp%5C%5CYouTube%5C%5Cnode_modules%5C%5C%40clerk%5C%5Cnextjs%5C%5Cdist%5C%5Cesm%5C%5Capp-router%5C%5Ckeyless-actions.js%22%2C%5B%5B%227f1a4258143de488f2930ecf0d4b6a4615e72d184f%22%2C%22syncKeylessConfigAction%22%5D%2C%5B%227f2321b7426fd96bb1157291c36d8a0a156fed87cc%22%2C%22createOrReadKeylessAction%22%5D%2C%5B%227f9fef97f0fb4fc760dced7691ad9290af669143b5%22%2C%22deleteKeylessAction%22%5D%5D%5D%5D&__client_imported__=!",
+          "async": false
+        },
+        "app/(studio)/studio/videos/[videoId]/page": {
+          "moduleId": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22D%3A%5C%5Ctemp%5C%5CYouTube%5C%5Cnode_modules%5C%5C%40clerk%5C%5Cnextjs%5C%5Cdist%5C%5Cesm%5C%5Capp-router%5C%5Ckeyless-actions.js%22%2C%5B%5B%227f1a4258143de488f2930ecf0d4b6a4615e72d184f%22%2C%22syncKeylessConfigAction%22%5D%2C%5B%227f2321b7426fd96bb1157291c36d8a0a156fed87cc%22%2C%22createOrReadKeylessAction%22%5D%2C%5B%227f9fef97f0fb4fc760dced7691ad9290af669143b5%22%2C%22deleteKeylessAction%22%5D%5D%5D%5D&__client_imported__=!",
+          "async": false
+        }
+      },
+      "layer": {
+        "app/(home)/page": "rsc",
+        "app/(studio)/studio/page": "rsc",
+        "app/(studio)/studio/videos/[videoId]/page": "rsc"
+      }
+    },
+    "7f2321b7426fd96bb1157291c36d8a0a156fed87cc": {
+      "workers": {
+        "app/(home)/page": {
+          "moduleId": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22D%3A%5C%5Ctemp%5C%5CYouTube%5C%5Cnode_modules%5C%5C%40clerk%5C%5Cnextjs%5C%5Cdist%5C%5Cesm%5C%5Capp-router%5C%5Ckeyless-actions.js%22%2C%5B%5B%227f1a4258143de488f2930ecf0d4b6a4615e72d184f%22%2C%22syncKeylessConfigAction%22%5D%2C%5B%227f2321b7426fd96bb1157291c36d8a0a156fed87cc%22%2C%22createOrReadKeylessAction%22%5D%2C%5B%227f9fef97f0fb4fc760dced7691ad9290af669143b5%22%2C%22deleteKeylessAction%22%5D%5D%5D%5D&__client_imported__=!",
+          "async": false
+        },
+        "app/(studio)/studio/page": {
+          "moduleId": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22D%3A%5C%5Ctemp%5C%5CYouTube%5C%5Cnode_modules%5C%5C%40clerk%5C%5Cnextjs%5C%5Cdist%5C%5Cesm%5C%5Capp-router%5C%5Ckeyless-actions.js%22%2C%5B%5B%227f1a4258143de488f2930ecf0d4b6a4615e72d184f%22%2C%22syncKeylessConfigAction%22%5D%2C%5B%227f2321b7426fd96bb1157291c36d8a0a156fed87cc%22%2C%22createOrReadKeylessAction%22%5D%2C%5B%227f9fef97f0fb4fc760dced7691ad9290af669143b5%22%2C%22deleteKeylessAction%22%5D%5D%5D%5D&__client_imported__=!",
+          "async": false
+        },
+        "app/(studio)/studio/videos/[videoId]/page": {
+          "moduleId": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22D%3A%5C%5Ctemp%5C%5CYouTube%5C%5Cnode_modules%5C%5C%40clerk%5C%5Cnextjs%5C%5Cdist%5C%5Cesm%5C%5Capp-router%5C%5Ckeyless-actions.js%22%2C%5B%5B%227f1a4258143de488f2930ecf0d4b6a4615e72d184f%22%2C%22syncKeylessConfigAction%22%5D%2C%5B%227f2321b7426fd96bb1157291c36d8a0a156fed87cc%22%2C%22createOrReadKeylessAction%22%5D%2C%5B%227f9fef97f0fb4fc760dced7691ad9290af669143b5%22%2C%22deleteKeylessAction%22%5D%5D%5D%5D&__client_imported__=!",
+          "async": false
+        }
+      },
+      "layer": {
+        "app/(home)/page": "rsc",
+        "app/(studio)/studio/page": "rsc",
+        "app/(studio)/studio/videos/[videoId]/page": "rsc"
+      }
+    },
+    "7f9fef97f0fb4fc760dced7691ad9290af669143b5": {
+      "workers": {
+        "app/(home)/page": {
+          "moduleId": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22D%3A%5C%5Ctemp%5C%5CYouTube%5C%5Cnode_modules%5C%5C%40clerk%5C%5Cnextjs%5C%5Cdist%5C%5Cesm%5C%5Capp-router%5C%5Ckeyless-actions.js%22%2C%5B%5B%227f1a4258143de488f2930ecf0d4b6a4615e72d184f%22%2C%22syncKeylessConfigAction%22%5D%2C%5B%227f2321b7426fd96bb1157291c36d8a0a156fed87cc%22%2C%22createOrReadKeylessAction%22%5D%2C%5B%227f9fef97f0fb4fc760dced7691ad9290af669143b5%22%2C%22deleteKeylessAction%22%5D%5D%5D%5D&__client_imported__=!",
+          "async": false
+        },
+        "app/(studio)/studio/page": {
+          "moduleId": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22D%3A%5C%5Ctemp%5C%5CYouTube%5C%5Cnode_modules%5C%5C%40clerk%5C%5Cnextjs%5C%5Cdist%5C%5Cesm%5C%5Capp-router%5C%5Ckeyless-actions.js%22%2C%5B%5B%227f1a4258143de488f2930ecf0d4b6a4615e72d184f%22%2C%22syncKeylessConfigAction%22%5D%2C%5B%227f2321b7426fd96bb1157291c36d8a0a156fed87cc%22%2C%22createOrReadKeylessAction%22%5D%2C%5B%227f9fef97f0fb4fc760dced7691ad9290af669143b5%22%2C%22deleteKeylessAction%22%5D%5D%5D%5D&__client_imported__=!",
+          "async": false
+        },
+        "app/(studio)/studio/videos/[videoId]/page": {
+          "moduleId": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22D%3A%5C%5Ctemp%5C%5CYouTube%5C%5Cnode_modules%5C%5C%40clerk%5C%5Cnextjs%5C%5Cdist%5C%5Cesm%5C%5Capp-router%5C%5Ckeyless-actions.js%22%2C%5B%5B%227f1a4258143de488f2930ecf0d4b6a4615e72d184f%22%2C%22syncKeylessConfigAction%22%5D%2C%5B%227f2321b7426fd96bb1157291c36d8a0a156fed87cc%22%2C%22createOrReadKeylessAction%22%5D%2C%5B%227f9fef97f0fb4fc760dced7691ad9290af669143b5%22%2C%22deleteKeylessAction%22%5D%5D%5D%5D&__client_imported__=!",
+          "async": false
+        }
+      },
+      "layer": {
+        "app/(home)/page": "rsc",
+        "app/(studio)/studio/page": "rsc",
+        "app/(studio)/studio/videos/[videoId]/page": "rsc"
+      }
+    },
+    "7ffb08e7be83902a50586914b77f227d44b2cdba9c": {
+      "workers": {
+        "app/(home)/page": {
+          "moduleId": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22D%3A%5C%5Ctemp%5C%5CYouTube%5C%5Cnode_modules%5C%5C%40clerk%5C%5Cnextjs%5C%5Cdist%5C%5Cesm%5C%5Capp-router%5C%5Cserver-actions.js%22%2C%5B%5B%227ffb08e7be83902a50586914b77f227d44b2cdba9c%22%2C%22invalidateCacheAction%22%5D%5D%5D%5D&__client_imported__=true!",
+          "async": false
+        },
+        "app/(studio)/studio/page": {
+          "moduleId": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22D%3A%5C%5Ctemp%5C%5CYouTube%5C%5Cnode_modules%5C%5C%40clerk%5C%5Cnextjs%5C%5Cdist%5C%5Cesm%5C%5Capp-router%5C%5Cserver-actions.js%22%2C%5B%5B%227ffb08e7be83902a50586914b77f227d44b2cdba9c%22%2C%22invalidateCacheAction%22%5D%5D%5D%5D&__client_imported__=true!",
+          "async": false
+        },
+        "app/(studio)/studio/videos/[videoId]/page": {
+          "moduleId": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22D%3A%5C%5Ctemp%5C%5CYouTube%5C%5Cnode_modules%5C%5C%40clerk%5C%5Cnextjs%5C%5Cdist%5C%5Cesm%5C%5Capp-router%5C%5Cserver-actions.js%22%2C%5B%5B%227ffb08e7be83902a50586914b77f227d44b2cdba9c%22%2C%22invalidateCacheAction%22%5D%5D%5D%5D&__client_imported__=true!",
+          "async": false
+        }
+      },
+      "layer": {
+        "app/(home)/page": "action-browser",
+        "app/(studio)/studio/page": "action-browser",
+        "app/(studio)/studio/videos/[videoId]/page": "action-browser"
+      }
+    }
+  },
+  "edge": {},
+  "encryptionKey": "5VDDQp3QY1QueSWLt+gaR1k+Uir5uIA8Xq+KD6eb0kQ="
+}
