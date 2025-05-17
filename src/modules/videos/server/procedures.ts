@@ -1,3 +1,4 @@
+import { workflow } from "@/lib/workflow";
 import { db } from "@/db";
 import { videos, videoUpdateSchema } from "@/db/schema";
 import { mux } from "@/lib/mux";
@@ -8,6 +9,28 @@ import { UTApi } from "uploadthing/server";
 import { z } from "zod";
 
 export const videosRouter = createTRPCRouter({
+  // generate thumbnail workflow
+  generateThumbnail: protectedProcedure
+    .input(
+      z.object({
+        id: z.string().uuid(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { id: userId } = ctx.user;
+
+    const { workflowRunId } = await workflow.trigger({
+      url: `${process.env.QSTASH_WORKFLOW_URL}/api/workflows/videos/title`,
+      body: {
+        userId,
+        videoId: input.id,
+      },
+    });
+
+    return {
+      workflowRunId,
+    };
+  }),
   // reset thumbnail to default/odl thumbnail
   restoreThumbnail: protectedProcedure
     .input(
@@ -36,9 +59,7 @@ export const videosRouter = createTRPCRouter({
         await db
           .update(videos)
           .set({ thumbnailKey: null, thumbnailUrl: null })
-          .where(
-            and(eq(videos.id, input.id), eq(videos.userId, userId))
-          );
+          .where(and(eq(videos.id, input.id), eq(videos.userId, userId)));
       }
 
       if (!currentVideo.muxPlaybackId)
@@ -47,16 +68,19 @@ export const videosRouter = createTRPCRouter({
           message: "invalid request",
         });
 
-      const utapi = new UTApi()
+      const utapi = new UTApi();
 
       const tempThumbnailUrl = `https://image.mux.com/${currentVideo.muxPlaybackId}/thumbnail.jpg`;
-      const uploadedThumb = await utapi.uploadFilesFromUrl(tempThumbnailUrl)
+      const uploadedThumb = await utapi.uploadFilesFromUrl(tempThumbnailUrl);
 
       if (!uploadedThumb.data) {
-        throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "no thumbnail url"})
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "no thumbnail url",
+        });
       }
 
-      const { key: thumbnailKey, url: thumbnailUrl } = uploadedThumb.data
+      const { key: thumbnailKey, url: thumbnailUrl } = uploadedThumb.data;
 
       // reset the thumbnail
       const [newVideo] = await db

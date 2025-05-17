@@ -1,7 +1,0 @@
-{
-  "/api/trpc/[trpc]/route": "app/api/trpc/[trpc]/route.js",
-  "/api/videos/webhook/route": "app/api/videos/webhook/route.js",
-  "/(home)/page": "app/(home)/page.js",
-  "/(studio)/studio/page": "app/(studio)/studio/page.js",
-  "/(studio)/studio/videos/[videoId]/page": "app/(studio)/studio/videos/[videoId]/page.js"
-}

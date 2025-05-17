@@ -51,7 +51,6 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { THUMBNAIL_URL } from "@/modules/videos/constants";
 import { ThumbnailUploadModal } from "../components/thumbnail-upload-modal";
-
 interface FormProps {
   videoId: string;
 }
@@ -76,7 +75,7 @@ export const FormSectionSuspense = ({ videoId }: FormProps) => {
   const [categories] = trpc.categories.getMany.useSuspenseQuery();
   const utils = trpc.useUtils();
 
-  // update video
+  //update video
   const update = trpc.videos.update.useMutation({
     onSuccess: () => {
       utils.studio.getMany.invalidate();
@@ -88,7 +87,7 @@ export const FormSectionSuspense = ({ videoId }: FormProps) => {
     },
   });
 
-  // delete video
+  //delete video
   const remove = trpc.videos.remove.useMutation({
     onSuccess: () => {
       utils.studio.getMany.invalidate();
@@ -100,7 +99,7 @@ export const FormSectionSuspense = ({ videoId }: FormProps) => {
     },
   });
 
-  // restore thumbnail
+  //restore video thumbnail
   const restoreThumbnail = trpc.videos.restoreThumbnail.useMutation({
     onSuccess: () => {
       utils.studio.getMany.invalidate();
@@ -112,39 +111,34 @@ export const FormSectionSuspense = ({ videoId }: FormProps) => {
     },
   });
 
-  // generate thumbnail
-  const generateThumbnail = trpc.videos.generateThumbnail.useMutation({
-    onSuccess: () => {
-      toast.success("Generating thumbnail...", {
-        description: "This may take a few minutes",
-      });
-    },
-    onError: () => {
-      toast.error("Something went terribly wrong");
-    },
-  });
-
-  // form
+  //form
   const myForm = useForm<z.infer<typeof videoUpdateSchema>>({
     resolver: zodResolver(videoUpdateSchema),
     defaultValues: video,
   });
 
+  //handle submit
   const onSubmit = (data: z.infer<typeof videoUpdateSchema>) => {
     update.mutate(data);
   };
 
+  // video link
   const videoUrl = `${
     process.env.VERCEL_URL || "http://localhost:3000"
   }/videos${videoId}`;
   const [isCopied, setIsCopied] = useState(false);
 
+  // handle copy event
   const onCopy = async () => {
     await navigator.clipboard.writeText(videoUrl);
     setIsCopied(true);
-    setTimeout(() => setIsCopied(false), 2000);
+
+    setTimeout(() => {
+      setIsCopied(false);
+    }, 2000);
   };
 
+  // thumbnail upload modal
   const [open, setOpen] = useState(false);
 
   return (
@@ -154,7 +148,6 @@ export const FormSectionSuspense = ({ videoId }: FormProps) => {
         open={open}
         onOpenChange={setOpen}
       />
-
       <Form {...myForm}>
         <form onSubmit={myForm.handleSubmit(onSubmit)}>
           <div className="flex items-center justify-between mb-6">
@@ -176,6 +169,7 @@ export const FormSectionSuspense = ({ videoId }: FormProps) => {
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
+                  {/* TODO: add a confirm delete dialog */}
                   <DropdownMenuItem
                     onClick={() => remove.mutate({ id: videoId })}
                   >
@@ -186,9 +180,9 @@ export const FormSectionSuspense = ({ videoId }: FormProps) => {
               </DropdownMenu>
             </div>
           </div>
-
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
             <div className="space-y-8 lg:col-span-3">
+              {/* Edit title */}
               <FormField
                 control={myForm.control}
                 name="title"
@@ -197,12 +191,13 @@ export const FormSectionSuspense = ({ videoId }: FormProps) => {
                     <FormLabel>Title</FormLabel>
                     <FormControl>
                       <Input {...field} placeholder="Video title" />
+                      <FormMessage />
                     </FormControl>
-                    <FormMessage />
                   </FormItem>
                 )}
               />
 
+              {/* Edit description */}
               <FormField
                 control={myForm.control}
                 name="description"
@@ -217,12 +212,13 @@ export const FormSectionSuspense = ({ videoId }: FormProps) => {
                         rows={6}
                         className="resize-none pr-10"
                       />
+                      <FormMessage />
                     </FormControl>
-                    <FormMessage />
                   </FormItem>
                 )}
               />
 
+              {/* TODO: Edit thumbnail */}
               <FormField
                 control={myForm.control}
                 name="thumbnailUrl"
@@ -248,18 +244,19 @@ export const FormSectionSuspense = ({ videoId }: FormProps) => {
                             </Button>
                           </DropdownMenuTrigger>
                           <DropdownMenuContent align="start" side="right">
+                            {/* upload new thumbnail */}
                             <DropdownMenuItem onClick={() => setOpen(true)}>
                               <ImagePlusIcon className="size-4 mr-1" />
                               Upload new thumbnail
                             </DropdownMenuItem>
-                            <DropdownMenuItem
-                              onClick={() =>
-                                generateThumbnail.mutate({ id: videoId })
-                              }
-                            >
+
+                            {/* generate with ai */}
+                            <DropdownMenuItem>
                               <SparklesIcon className="size-4 mr-1" />
                               Generate with AI
                             </DropdownMenuItem>
+
+                            {/* reset to default */}
                             <DropdownMenuItem
                               onClick={() =>
                                 restoreThumbnail.mutate({ id: videoId })
@@ -276,6 +273,7 @@ export const FormSectionSuspense = ({ videoId }: FormProps) => {
                 )}
               />
 
+              {/* Edit category */}
               <FormField
                 control={myForm.control}
                 name="categoryId"
@@ -302,10 +300,14 @@ export const FormSectionSuspense = ({ videoId }: FormProps) => {
                   </FormItem>
                 )}
               />
+
+              {/* Edit tags */}
             </div>
 
+            {/* advanced */}
             <div className="flex flex-col gap-y-8 lg:col-span-2">
               <div className="flex flex-col gap-4 bg-[#f9f9f9] overflow-hidden h-fit rounded-xl">
+                {/* video player */}
                 <div className="aspect-video overflow-hidden relative">
                   <VideoPlayer
                     playbackId={video.muxPlaybackId}
@@ -313,7 +315,9 @@ export const FormSectionSuspense = ({ videoId }: FormProps) => {
                   />
                 </div>
 
+                {/* video properties */}
                 <div className="p-4 flex flex-col gap-y-6">
+                  {/* video link */}
                   <div className="flex justify-between items-center gap-x-2">
                     <div className="flex flex-col gap-y-1">
                       <p className="text-muted-foreground text-xs">
@@ -339,6 +343,7 @@ export const FormSectionSuspense = ({ videoId }: FormProps) => {
                     </div>
                   </div>
 
+                  {/* Video status */}
                   <div className="flex items-center justify-between">
                     <div className="flex flex-col gap-y-1">
                       <p className="text-muted-foreground text-xs">
@@ -350,6 +355,7 @@ export const FormSectionSuspense = ({ videoId }: FormProps) => {
                     </div>
                   </div>
 
+                  {/* Video status */}
                   <div className="flex items-center justify-between">
                     <div className="flex flex-col gap-y-1">
                       <p className="text-muted-foreground text-xs">Subtitles</p>
@@ -358,9 +364,12 @@ export const FormSectionSuspense = ({ videoId }: FormProps) => {
                       </p>
                     </div>
                   </div>
+
+                  {/* TODO: add more details */}
                 </div>
               </div>
 
+              {/* sectiion */}
               <FormField
                 control={myForm.control}
                 name="visibility"
