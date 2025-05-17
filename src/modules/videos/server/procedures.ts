@@ -19,18 +19,18 @@ export const videosRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const { id: userId } = ctx.user;
 
-    const { workflowRunId } = await workflow.trigger({
-      url: `${process.env.QSTASH_WORKFLOW_URL}/api/workflows/videos/title`,
-      body: {
-        userId,
-        videoId: input.id,
-      },
-    });
+      const { workflowRunId } = await workflow.trigger({
+        url: `${process.env.QSTASH_WORKFLOW_URL}/api/workflows/videos/title`,
+        body: {
+          userId,
+          videoId: input.id,
+        },
+      });
 
-    return {
-      workflowRunId,
-    };
-  }),
+      return {
+        workflowRunId,
+      };
+    }),
   // reset thumbnail to default/odl thumbnail
   restoreThumbnail: protectedProcedure
     .input(
@@ -80,7 +80,7 @@ export const videosRouter = createTRPCRouter({
         });
       }
 
-      const { key: thumbnailKey, url: thumbnailUrl } = uploadedThumb.data;
+      const { key: thumbnailKey, ufsUrl: thumbnailUrl } = uploadedThumb.data;
 
       // reset the thumbnail
       const [newVideo] = await db

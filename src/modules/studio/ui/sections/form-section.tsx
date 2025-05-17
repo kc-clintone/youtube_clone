@@ -236,6 +236,7 @@ export const FormSectionSuspense = ({ videoId }: FormProps) => {
                           alt="thumbnail"
                           fill
                           className="object-cover"
+                          unoptimized
                         />
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
