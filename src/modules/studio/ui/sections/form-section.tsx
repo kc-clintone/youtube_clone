@@ -21,6 +21,7 @@ import {
   RotateCcwSquareIcon,
   SparklesIcon,
   Trash2Icon,
+  WandSparkles,
 } from "lucide-react";
 import { Suspense, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
@@ -124,6 +125,30 @@ export const FormSectionSuspense = ({ videoId }: FormProps) => {
     },
   });
 
+  // generate title
+  const generateTitle = trpc.videos.generateTitle.useMutation({
+    onSuccess: () => {
+      toast.success("Generating title...", {
+        description: "This may take a few minutes",
+      });
+    },
+    onError: () => {
+      toast.error("Something went terribly wrong");
+    },
+  });
+
+  // generate description
+  const generateDescription = trpc.videos.generateDescription.useMutation({
+    onSuccess: () => {
+      toast.success("Generating description...", {
+        description: "This may take a few minutes",
+      });
+    },
+    onError: () => {
+      toast.error("Something went terribly wrong");
+    },
+  });
+
   // form
   const myForm = useForm<z.infer<typeof videoUpdateSchema>>({
     resolver: zodResolver(videoUpdateSchema),
@@ -194,7 +219,25 @@ export const FormSectionSuspense = ({ videoId }: FormProps) => {
                 name="title"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Title</FormLabel>
+                    <FormLabel>
+                      <div className="flex items-center gap-x-2">
+                        Title
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="icon"
+                          onClick={() => generateTitle.mutate({ id: videoId })}
+                          disabled={generateTitle.isPending}
+                          className="size-7 rounded-full [&_svg]:size-4"
+                        >
+                          {generateTitle.isPending ? (
+                            <WandSparkles className="animate-spin" />
+                          ) : (
+                            <WandSparkles />
+                          )}
+                        </Button>
+                      </div>
+                    </FormLabel>
                     <FormControl>
                       <Input {...field} placeholder="Video title" />
                     </FormControl>
@@ -208,7 +251,27 @@ export const FormSectionSuspense = ({ videoId }: FormProps) => {
                 name="description"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Description</FormLabel>
+                    <FormLabel>
+                      <div className="flex items-center gap-x-2">
+                        Description
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="icon"
+                          onClick={() =>
+                            generateDescription.mutate({ id: videoId })
+                          }
+                          disabled={generateDescription.isPending}
+                          className="size-7 rounded-full [&_svg]:size-4"
+                        >
+                          {generateDescription.isPending ? (
+                            <WandSparkles className="animate-spin" />
+                          ) : (
+                            <WandSparkles />
+                          )}
+                        </Button>
+                      </div>
+                    </FormLabel>
                     <FormControl>
                       <Textarea
                         {...field}
