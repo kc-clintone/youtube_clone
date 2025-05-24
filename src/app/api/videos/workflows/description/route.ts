@@ -40,7 +40,7 @@ export const { POST } = serve(async (context) => {
     return text;
   });
 
-  const { body } = await context.api.openai.call("generate-title", {
+  const { body } = await context.api.openai.call("generate-description", {
     baseURL: "https://api.deepseek.com",
     token: process.env.DEEPSEEK_API_KEY!,
     operation: "chat.completions.create",
@@ -59,16 +59,16 @@ export const { POST } = serve(async (context) => {
     },
   });
 
-  const title = body.choices[0]?.message.content;
+  const description = body.choices[0]?.message.content;
 
-  if (!title) throw new Error("Failed to generate title");
+  if (!description) throw new Error("Failed to generate description");
   
   await context.run("update-video", async () => {
 
     await db
       .update(videos)
       .set({
-        title: title || video.title,
+        description: description || video.description,
       })
       .where(and(eq(videos.id, video.id), eq(videos.userId, video.userId)));
   });

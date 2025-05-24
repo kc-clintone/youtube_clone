@@ -52,6 +52,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { THUMBNAIL_URL } from "@/modules/videos/constants";
 import { ThumbnailUploadModal } from "../components/thumbnail-upload-modal";
+import { ThumbnailGenerateModal } from "../components/thumbnail-generate-modal";
 
 interface FormProps {
   videoId: string;
@@ -113,18 +114,6 @@ export const FormSectionSuspense = ({ videoId }: FormProps) => {
     },
   });
 
-  // generate thumbnail
-  const generateThumbnail = trpc.videos.generateThumbnail.useMutation({
-    onSuccess: () => {
-      toast.success("Generating thumbnail...", {
-        description: "This may take a few minutes",
-      });
-    },
-    onError: () => {
-      toast.error("Something went terribly wrong");
-    },
-  });
-
   // generate title
   const generateTitle = trpc.videos.generateTitle.useMutation({
     onSuccess: () => {
@@ -170,10 +159,20 @@ export const FormSectionSuspense = ({ videoId }: FormProps) => {
     setTimeout(() => setIsCopied(false), 2000);
   };
 
+  // thumbnail modal states
   const [open, setOpen] = useState(false);
+  const [generateThumbnailOpen, setGenerateThumbnailOpen] = useState(false);
 
   return (
     <>
+      {/* thumbnail generate modal */}
+      <ThumbnailGenerateModal
+        videoId={videoId}
+        open={generateThumbnailOpen}
+        onOpenChange={setGenerateThumbnailOpen}
+      />
+
+      {/* thumbnail upload modal */}
       <ThumbnailUploadModal
         videoId={videoId}
         open={open}
@@ -227,7 +226,9 @@ export const FormSectionSuspense = ({ videoId }: FormProps) => {
                           variant="outline"
                           size="icon"
                           onClick={() => generateTitle.mutate({ id: videoId })}
-                          disabled={generateTitle.isPending}
+                          disabled={
+                            generateTitle.isPending || !video.muxTrackId
+                          }
                           className="size-7 rounded-full [&_svg]:size-4"
                         >
                           {generateTitle.isPending ? (
@@ -261,7 +262,9 @@ export const FormSectionSuspense = ({ videoId }: FormProps) => {
                           onClick={() =>
                             generateDescription.mutate({ id: videoId })
                           }
-                          disabled={generateDescription.isPending}
+                          disabled={
+                            generateDescription.isPending || !video.muxTrackId
+                          }
                           className="size-7 rounded-full [&_svg]:size-4"
                         >
                           {generateDescription.isPending ? (
@@ -318,7 +321,7 @@ export const FormSectionSuspense = ({ videoId }: FormProps) => {
                             </DropdownMenuItem>
                             <DropdownMenuItem
                               onClick={() =>
-                                generateThumbnail.mutate({ id: videoId })
+                                setGenerateThumbnailOpen(true)
                               }
                             >
                               <SparklesIcon className="size-4 mr-1" />
