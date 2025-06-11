@@ -1,3 +1,4 @@
+import { HomeVideoView } from "@/modules/videos/ui/views/video-view";
 import { HydrateClient, trpc } from "@/trpc/server";
 
 interface PageProps {
@@ -13,7 +14,7 @@ const Page = async ({ params }: PageProps) => {
 
   return (
     <HydrateClient>
-      <HomeVideoView />
+      <HomeVideoView videoId={videoId} />
     </HydrateClient>
   );
 };
