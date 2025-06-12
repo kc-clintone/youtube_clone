@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev:all": "concurrently \"npm run dev\" \"npm run dev:webhook\" ",
-    "dev:webhook": "ngrok http --domain=unified-kite-violently.ngrok-free.app 3000",
+    "dev:webhook": "ngrok http --domain=rightly-creative-spaniel.ngrok-free.app 3000",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
