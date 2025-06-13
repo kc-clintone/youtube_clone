@@ -1,7 +1,7 @@
 import { Button, ButtonProps } from "@ui/button";
 import { cn } from "@utils/cn";
 
-interface SubButtonProps {
+interface SubscriptionButtonProps {
   onClick: ButtonProps["onClick"];
   disabled: boolean;
   isSubscribed: boolean;
@@ -9,13 +9,13 @@ interface SubButtonProps {
   size?: ButtonProps["size"];
 }
 
-export const SubButton = ({
+export const SubscriptionButton = ({
   onClick,
   disabled,
   isSubscribed,
   classname,
   size,
-}: SubButtonProps) => {
+}: SubscriptionButtonProps) => {
   return (
     <Button
       disabled={disabled}
