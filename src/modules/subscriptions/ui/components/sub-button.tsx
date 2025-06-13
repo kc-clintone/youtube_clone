@@ -1,11 +1,11 @@
-import { Button, ButtonProps } from "@ui/button";
-import { cn } from "@utils/cn";
+import { Button, ButtonProps } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 interface SubscriptionButtonProps {
   onClick: ButtonProps["onClick"];
   disabled: boolean;
   isSubscribed: boolean;
-  classname?: string;
+  className?: string;
   size?: ButtonProps["size"];
 }
 
