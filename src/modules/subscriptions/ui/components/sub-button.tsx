@@ -13,7 +13,7 @@ export const SubscriptionButton = ({
   onClick,
   disabled,
   isSubscribed,
-  classname,
+  className,
   size,
 }: SubscriptionButtonProps) => {
   return (
@@ -22,7 +22,7 @@ export const SubscriptionButton = ({
       onClick={onClick}
       size={size}
       variant={isSubscribed ? "secondary" : "default"}
-      classname={cn("rounded-full", classname)}
+      className={cn("rounded-full", className)}
     >
       {isSubscribed ? "Unsubscribe" : "Subscribe"}
     </Button>
