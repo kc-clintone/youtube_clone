@@ -7,6 +7,8 @@ export const VideoReactions = () => {
   const VieweroReaction = "like" | "dislike";
   const likes = 10;
   const dislikes = 2;
+
+  // TODO: properly implement his componennt
   return (
     <div className="flex items-center flex-none">
       <Button
