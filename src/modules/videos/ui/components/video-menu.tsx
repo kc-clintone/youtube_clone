@@ -12,6 +12,8 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
+import { toast } from "sonner";
+
 interface VideoMenuProps {
   videoId: string;
   onRemove?: () => void;

@@ -2,6 +2,7 @@ import { VideoGetOneOutput } from "@/modules/types";
 import { VideoOwner } from "./video-owner";
 import { Videoreactions } from "./video-reactions";
 import { VideoMenu } from "./video-menu";
+import { VideoDescription } from "./video-description";
 
 interface VideoTopRowProps {
   video: VideoGetOneOutput;
