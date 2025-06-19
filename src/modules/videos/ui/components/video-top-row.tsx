@@ -15,13 +15,13 @@ export const VideoTopRow = ({ video }: VideoTopRowProps) => {
   const compactViews = useMemo(() => {
     return Intl.NumberFormat("en-US", {
       notation: "standard",
-    }).format(123456)
-  }, [])
+    }).format(video.viewsCount)
+  }, [video.viewsCount])
   const expandViews = useMemo(() => {
     return Intl.NumberFormat("en-US", {
       notation: "standard",
-    }).format(12345678)
-  }, [])
+    }).format(video.viewsCount)
+  }, [video.viewsCount])
   ;
 
   // Format the date to a more readable format
