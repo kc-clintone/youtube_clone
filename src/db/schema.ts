@@ -1,4 +1,8 @@
-import { createInsertSchema, createUpdateSchema, createSelectSchema } from "drizzle-zod";
+import {
+  createInsertSchema,
+  createUpdateSchema,
+  createSelectSchema,
+} from "drizzle-zod";
 import { relations } from "drizzle-orm";
 import {
   uuid,
@@ -87,7 +91,6 @@ export const videoSelectSchema = createSelectSchema(videos);
 export const videoInsertSchema = createInsertSchema(videos);
 export const videoUpdateSchema = createUpdateSchema(videos);
 
-
 //video relations
 export const videoRelations = relations(videos, ({ one }) => ({
   user: one(users, {
@@ -99,3 +102,10 @@ export const videoRelations = relations(videos, ({ one }) => ({
     references: [categories.id],
   }),
 }));
+
+export const videoViews = pgTable("video_views", {
+  userId: uuid("user_id").references(() => users.id, { onDelete: "cascade" }),
+  videoId: uuid("user_id").references(() => videos.id, {
+    onDelete: "cascade",
+  }),
+});
