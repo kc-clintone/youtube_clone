@@ -1,3 +1,4 @@
+import { videoViews } from '@/db/schema';
 import { workflow } from "@/lib/workflow";
 import { db } from "@/db";
 import { users, videos, videoUpdateSchema } from "@/db/schema";
@@ -23,6 +24,7 @@ export const videosRouter = createTRPCRouter({
           user: {
             ...getTableColumns(users),
           },
+          viewsCount: db.$count(videoViews, eq(videoViews.videoId, videos.id))
         })
         .from(videos)
         .where(eq(videos.id, input.id))

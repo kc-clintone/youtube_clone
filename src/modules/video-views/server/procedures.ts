@@ -1,6 +1,6 @@
 import { eq } from "drizzle-orm";
 import { and } from "drizzle-orm";
-import { videoViews } from "./../../../db/schema";
+import { videoViews } from "@/db/schema";
 import { db } from "@/db";
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "@/trpc/init";
