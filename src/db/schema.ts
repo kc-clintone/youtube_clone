@@ -104,6 +104,8 @@ export const videoRelations = relations(videos, ({ one }) => ({
   }),
 }));
 
+// video views schema
+// This table tracks the views of videos by users.
 export const videoViews = pgTable("video_views", {
   userId: uuid("user_id")
     .references(() => users.id, { onDelete: "cascade" })
@@ -120,6 +122,7 @@ export const videoViews = pgTable("video_views", {
   }),
 ])
 
+// video views relations
 export const videoViewsRelations = relations(videoViews, ({ one }) => ({
   users: one(users, {
     fields: [videoViews.userId],
@@ -130,3 +133,8 @@ export const videoViewsRelations = relations(videoViews, ({ one }) => ({
     references: [videos.id],
   }),
 }))
+
+//re-use video views schema
+export const videoViewsSelectSchema = createSelectSchema(videoViews);
+export const videoViewsInsertSchema = createInsertSchema(videoViews);
+export const videoViewsUpdateSchema = createUpdateSchema(videoViews);
