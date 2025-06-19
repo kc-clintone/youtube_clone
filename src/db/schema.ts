@@ -12,6 +12,7 @@ import {
   text,
   integer,
   pgEnum,
+  primaryKey,
 } from "drizzle-orm/pg-core";
 
 //user schema
@@ -104,8 +105,17 @@ export const videoRelations = relations(videos, ({ one }) => ({
 }));
 
 export const videoViews = pgTable("video_views", {
-  userId: uuid("user_id").references(() => users.id, { onDelete: "cascade" }),
-  videoId: uuid("user_id").references(() => videos.id, {
-    onDelete: "cascade",
+  userId: uuid("user_id")
+    .references(() => users.id, { onDelete: "cascade" })
+    .notNull(),
+  videoId: uuid("user_id")
+    .references(() => videos.id, { onDelete: "cascade" })
+    .notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+}, (t) => [
+  primaryKey({
+    columns: [t.userId, t.videoId],
+    name: "video_views_pkey",
   }),
-});
+])
