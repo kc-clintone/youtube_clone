@@ -119,3 +119,14 @@ export const videoViews = pgTable("video_views", {
     name: "video_views_pkey",
   }),
 ])
+
+export const videoViewsRelations = relations(videoViews, ({ one }) => ({
+  users: one(users, {
+    fields: [videoViews.userId],
+    references: [users.id],
+  }),
+  videos: one(videos, {
+    fields: [videoViews.videoId],
+    references: [videos.id],
+  }),
+}))
