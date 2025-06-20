@@ -1,6 +1,12 @@
 import { workflow } from "@/lib/workflow";
 import { db } from "@/db";
-import { users, videos, videoUpdateSchema, videoViews, videoReactions } from "@/db/schema";
+import {
+  users,
+  videos,
+  videoUpdateSchema,
+  videoViews,
+  videoReactions,
+} from "@/db/schema";
 import { mux } from "@/lib/mux";
 import {
   baseProcedure,
@@ -17,18 +23,32 @@ export const videosRouter = createTRPCRouter({
   getOne: baseProcedure
     .input(z.object({ id: z.string().uuid() }))
     .query(async ({ input, ctx }) => {
-      // check for logged in user
-      const {clerkUserId} = ctx
-      let userId
+      // check for logged in user and get the clerk user id
+      const { clerkUserId } = ctx;
+      let userId;
 
       const [user] = await db
         .select()
         .from(users)
-        .where(inArray(users.clerkId, clerkUserId ? [clerkUserId] : []))
+        .where(inArray(users.clerkId, clerkUserId ? [clerkUserId] : []));
 
-      const viewerReactions = db.$with("viewer_reactions").as();
+      if (user) {
+        userId = user.id;
+      }
+
+      // get the video with the given id
+      const viewerReactions = db.$with("viewer_reactions").as(
+        db
+          .select({
+            type: videoReactions.type,
+            videoId: videoReactions.videoId,
+          })
+          .from(videoReactions)
+          .where(inArray(videoReactions.userId, userId ? [userId] : []))
+      );
 
       const [existingVideo] = await db
+        .with(viewerReactions)
         .select({
           ...getTableColumns(videos),
           user: {
@@ -49,10 +69,13 @@ export const videosRouter = createTRPCRouter({
               eq(videoReactions.type, "dislike")
             )
           ),
+          viewerReaction: viewerReactions.type,
         })
         .from(videos)
+        .innerJoin(users, eq(videos.userId, users.id))
+        .leftJoin(viewerReactions, eq(viewerReactions.videoId, videos.id))
         .where(eq(videos.id, input.id))
-        .innerJoin(users, eq(videos.userId, users.id));
+        .groupBy(videos.id, users.id, viewerReactions.type);
 
       if (!existingVideo) throw new TRPCError({ code: "NOT_FOUND" });
 
