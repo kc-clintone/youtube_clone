@@ -5,7 +5,7 @@ import { db } from "@/db";
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "@/trpc/init";
 
-export const VideoViewsRouter = createTRPCRouter({
+export const videoViewsRouter = createTRPCRouter({
   create: protectedProcedure
     .input(
       z.object({

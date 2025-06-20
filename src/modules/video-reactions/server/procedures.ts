@@ -5,7 +5,7 @@ import { db } from "@/db";
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "@/trpc/init";
 
-export const VideoReactionsRouter = createTRPCRouter({
+export const videoReactionsRouter = createTRPCRouter({
   // Toggle like reaction on a video
   like: protectedProcedure
     .input(

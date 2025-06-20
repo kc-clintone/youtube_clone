@@ -1,14 +1,30 @@
 import { Button } from "@/components/ui/button";
 import { ThumbsUpIcon, ThumbsDownIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Seperator } from "@/components/ui/seperator";
+import { Separator } from "@/components/ui/separator";
+import { VideoGetOneOutput } from "@/modules/types";
+import { useClerk } from "@clerk/clerk-react";
+import { trpc } from "@/trpc/client";
 
-export const VideoReactions = () => {
-  const VieweroReaction = "like" | "dislike";
-  const likes = 10;
-  const dislikes = 2;
+interface VideoReactionsProps {
+  viewerReaction: VideoGetOneOutput["viewerReaction"];
+  videoId: string;
+  likes: number;
+  dislikes: number;
+}
 
-  // TODO: properly implement his componennt
+export const VideoReactions = ({
+  viewerReaction,
+  videoId,
+  likes,
+  dislikes,
+}:VideoReactionsProps) => {
+  // the logic to handle like and dislike reactions
+  const [clerkUser] = useClerk()
+  const utils = trpc.useUtils();
+
+  const likeMutation = trpc.videoReactions.like.useMutation()
+  const dislikeMutation = trpc.videoReactions.dislike.useMutation()
   return (
     <div className="flex items-center flex-none">
       <Button
@@ -16,22 +32,19 @@ export const VideoReactions = () => {
         className="rounded-l-none rounded-r-none gap-2 pr-4"
       >
         <ThumbsUpIcon
-          className={cn("size-4", VieweroReaction === "like" && "fill-black")}
+          className={cn("size-4", viewerReaction === "like" && "fill-black")}
         />
         {likes}
       </Button>
-      <Seperator className="h-7" orientation="vertical"/>
+      <Separator className="h-7" orientation="vertical" />
       <Button
         variant="secondary"
         className="rounded-l-none rounded-r-full pl-3"
       >
         <ThumbsDownIcon
-          className={cn(
-            "size-4",
-            VieweroReaction === "dislike" && "fill-black"
-          )}
+          className={cn("size-4", viewerReaction === "dislike" && "fill-black")}
         />
-        <span className="ml-2">{dislikes}</span>
+        {dislikes}
       </Button>
     </div>
   );
