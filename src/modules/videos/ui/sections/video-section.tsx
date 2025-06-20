@@ -27,7 +27,7 @@ const VideoSectionSuspense = ({ videoId }: VideoSectionProps) => {
   const utils = trpc.useUtils();
   const [video] = trpc.videos.getOne.useSuspenseQuery({ id: videoId });
   const creatView = trpc.videoViews.create.useMutation({
-    onsuccess: () => {
+    onSuccess: () => {
       utils.videos.getOne.invalidate({
         id: videoId,
       });
