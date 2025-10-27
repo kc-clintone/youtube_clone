@@ -1,6 +1,6 @@
 import { VideoSection } from "../sections/video-section";
-import { SuggestionsSection } from "sections/suggestions-section";
-import { CommentsSection } from "sections/comments-section";
+import { SuggestionsSection } from "./sections/suggestions-section";
+import { CommentsSection } from "./sections/comments-section";
 
 interface HomeVideoViewProps {
   videoId: string;
